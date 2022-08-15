@@ -46,11 +46,20 @@ def get_equity_df():
 
         # creating a cached file for future referencing
         df.to_csv("equity_df.csv")
-        
+
     # let's print the shape too
     print(f'df shape: {df.shape}')
 
     return df
 
 
+def clean_equity_df(df):
 
+    # removing the following features/columns as they appear to be redundant
+    df = df.drop(columns = ["over_18", "employee_count"])
+
+    # printing the new df shape
+    print(f'df shape: {df.shape}')
+
+    # lastly, return the dataframe
+    return df
