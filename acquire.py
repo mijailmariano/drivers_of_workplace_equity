@@ -17,9 +17,12 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 sns.set(style = "darkgrid")
 
+from sklearn.model_selection import train_test_split
+
 
 # creating a function to randomly apply county based on the employee's distance from home
 def get_county(x, lst_a, lst_b, lst_c, lst_d, lst_e):
+        random.seed(548)
         '''where x = employees' work distance from home in miles. 
         function will iterate through all records and randomly assign a county based on distance from work.'''
         lst = []
@@ -99,6 +102,68 @@ def get_employee_df():
 def clean_employee_df(df):
     # let's normalize the column names
     df = clean_columns(df)
+    
+    # pulling needed variables for exploration/analysis
+    df = df[[
+            'attrition',
+            'age',
+            'monthly_income',
+            'percent_salary_hike',
+            'total_working_years',
+            'training_times_last_year',
+            'years_at_company',
+            'household_income_at_35',
+            'high_school_graduation_rate',
+            'percentage_married_by_35',
+            'incarceration_rate',
+            'women_teenage_birthrate',
+            'poverty_rate',
+            'employment_rates_at_35yrs',
+            'single_parent_frac',
+            'years_since_last_promotion',
+            'county_name',
+            'department',
+            'education',
+            'education_field',
+            'environment_satisfaction',
+            'gender',
+            'job_involvement',
+            'job_level',
+            'job_role',
+            'job_satisfaction',
+            'marital_status',
+            'performance_rating',
+            'relationship_satisfaction',
+            'state',
+            'stock_option_level',
+            'work_life_balance',
+            'years_in_current_role',
+            'years_with_curr_manager']]
+
+    # renaming/classifying attrition as boolean value types
+    df["attrition"] = df["attrition"].replace({"Yes": True, "No": False})
+
+    # converting continuous variables to discrete type
+    disc_lst = [
+    'stock_option_level',
+    'work_life_balance',
+    'education',
+    'job_involvement',
+    'job_level',
+    'job_satisfaction',
+    'performance_rating',
+    'relationship_satisfaction',
+    'county_name',
+    'state',
+    'department',
+    'education_field',
+    'gender',
+    'job_role',
+    'marital_status',
+    'environment_satisfaction']
+
+    # setting the data types
+    df[disc_lst] = df[disc_lst].astype(object)
 
     # removing the following features/columns as they appear to be redundant
     df = df.drop(columns = ["over_18", "employee_count"])
@@ -111,3 +176,48 @@ def clean_employee_df(df):
 
     # lastly, return the dataframe
     return df
+
+
+'''creating a function to clean outliers at upperbounds'''
+def df_outliers(df):
+
+    # monthly income / leadership or seniority
+    df = df[df["monthly_income"] <= 16581.00]
+    
+    # length of working tenure
+    df = df[df["total_working_years"] <= 28.00]
+
+    # length of tenure at current company
+    df = df[df["years_at_company"] <= 18.00]
+
+    # number of years since last promotion
+    df = df[df["years_since_last_promotion"] <= 7.50]
+
+    # number of years in current role 
+    df = df[df["years_in_current_role"] <= 14.50]
+
+    # number of year with current manager
+    df = df[df["years_with_curr_manager"] <= 14.50]
+
+    # returning the cleaned dataset
+    print(f'dataframe shape: {df.shape}')
+
+    return df
+
+
+
+'''Function created to split the initial dataset into train, validate, and test datsets'''
+def train_validate_test_split(df):
+    train_and_validate, test = train_test_split(
+    df, test_size = 0.2, random_state = 548)
+    
+    train, validate = train_test_split(
+        train_and_validate,
+        test_size = 0.3,
+        random_state = 548)
+
+    print(f'train shape: {train.shape}')
+    print(f'validate shape: {validate.shape}')
+    print(f'test shape: {test.shape}')
+
+    return train, validate, test
