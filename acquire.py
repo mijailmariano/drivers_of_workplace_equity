@@ -18,6 +18,7 @@ import seaborn as sns
 sns.set(style = "darkgrid")
 
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
 
 
 # creating a function to randomly apply county based on the employee's distance from home
@@ -102,6 +103,9 @@ def get_employee_df():
 def clean_employee_df(df):
     # let's normalize the column names
     df = clean_columns(df)
+
+    # setting employee number as the index for future referencing and attrition modeling/predictions
+    df = df.set_index("employee_number").sort_index().rename_axis(None)
     
     # pulling needed variables for exploration/analysis
     df = df[[
@@ -165,12 +169,6 @@ def clean_employee_df(df):
     # setting the data types
     df[disc_lst] = df[disc_lst].astype(object)
 
-    # removing the following features/columns as they appear to be redundant
-    df = df.drop(columns = ["over_18", "employee_count"])
-    
-    # setting employee number as the index for future referencing and attrition modeling/predictions
-    df = df.set_index("employee_number").sort_index().rename_axis(None)
-
     # printing the new df shape
     print(f'df shape: {df.shape}')
 
@@ -221,3 +219,17 @@ def train_validate_test_split(df):
     print(f'test shape: {test.shape}')
 
     return train, validate, test
+
+
+def scaled_data(df, scaled_cols):
+    # creating a copy of the original zillow/dataframe
+    df_scaled = df.copy()
+
+    scaler = StandardScaler()
+
+    scaler.fit(df_scaled[scaled_cols])
+
+    df_scaled[scaled_cols] = scaler.transform(df_scaled[scaled_cols])
+
+    # returning newly created dataframe with scaled data
+    return df_scaled
