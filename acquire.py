@@ -9,43 +9,86 @@ import os
 import pandas as pd
 import numpy as np
 
+from skimpy import clean_columns
+import random
+
 # plotting libraries/modules
 import matplotlib.pyplot as plt
 import seaborn as sns
 sns.set(style = "darkgrid")
 
 
+# creating a function to randomly apply county based on the employee's distance from home
+def get_county(x, lst_a, lst_b, lst_c, lst_d, lst_e):
+        '''where x = employees' work distance from home in miles. 
+        function will iterate through all records and randomly assign a county based on distance from work.'''
+        lst = []
 
-def get_equity_df():
+        if x <= 5:
+                county = random.choice(lst_a)
+                lst.append(county)
 
+        elif x > 5 and x <= 10:
+                county = random.choice(lst_b)
+                lst.append(county)
+
+        elif x > 10 and x <= 21:
+                county = random.choice(lst_c)
+                lst.append(county)
+        
+        elif x > 27 and x <= 30:
+                county = random.choice(lst_e)
+                lst.append(county)
+
+        else:
+                county = lst_d[0]
+                lst.append(county)
+
+        # returning the list of counties
+        return lst
+
+
+def get_employee_df():
+    random.seed(548)
     # check for a cached dataset
-    filename = "equity_df.csv"
+    filename = "emp_df.csv"
     if os.path.isfile(filename):
         df = pd.read_csv(filename)
 
     else:
         # importing the two (2) main dataframes (ibm attrition/opportunity atlas data)
-        ibm_df = pd.read_csv("/Users/mijailmariano/Desktop/IBM_HR-Employee-Attrition.csv")
-        equity_df = pd.read_csv("/Users/mijailmariano/Desktop/equity_table.csv")
+        df1 = pd.read_csv("/Users/mijailmariano/Desktop/IBM_HR-Employee-Attrition.csv")
+        df2 = pd.read_csv("/Users/mijailmariano/Desktop/equity_table.csv")
 
-        '''let's use a random sampler to create 1470 geographical location records of of the 
-        - using Pandas' '.sample()' method wtih parameters 'replace' set to True to allow for duplicate records
-        - resetting the index number
-        - setting a random state for reproducibility'''
-
-        sample_df = equity_df.sample(n = 1470, replace = True, ignore_index = True, random_state = 528)
-
-        '''let's also reshuffle the ibm df for random assignment & suffling of the dataframe
-        - resetting the index number (can use unique employee id for predictions/future indexing)
-        - setting a random state for reproducibility'''
-
-        ibm_shuffled = ibm_df.sample(n = 1470, replace = False, ignore_index = True, random_state = 528)
+        df2["distance"] = df2["distance"].str.replace("miles", "").astype(int)
         
-        # concatinating the two (2) dataframes
-        df = pd.concat([ibm_shuffled, sample_df], axis = 1)
+        # creating the county bins
+        area_one = df2[df2["distance"] <= 5].county_name.tolist()
+        area_two = df2[(df2["distance"] > 5) & (df2["distance"] <= 10)].county_name.tolist()
+        area_three = df2[(df2["distance"] > 10) & (df2["distance"] <= 21)].county_name.tolist()
+        area_four = df2[(df2["distance"] > 21) & (df2["distance"] <= 27)].county_name.tolist()
+        area_five = df2[(df2["distance"] > 27) & (df2["distance"] <= 30)].county_name.tolist()
+
+        # applying the 'get_county()' function to ibm employee df
+        county_lst = df1["DistanceFromHome"].apply(get_county, args = (area_one, area_two, area_three, area_four, area_five))
+        
+        # let's flatten the county list
+        county_lst = [val for sublist in county_lst for val in sublist]
+        county_lst = pd.Series(county_lst)
+
+        # assing the series to the ibm dataframe
+        df1["county_name"] = county_lst
+
+        # merging the two dataframes and dropping unneeded columns
+        df = df1.merge(
+                        df2,
+                        how = "left",
+                        left_on = "county_name",
+                        right_on = "county_name"
+                    ).drop(columns = "distance")
 
         # creating a cached file for future referencing
-        df.to_csv("equity_df.csv")
+        df.to_csv("emp_df.csv")
 
     # let's print the shape too
     print(f'df shape: {df.shape}')
@@ -53,10 +96,15 @@ def get_equity_df():
     return df
 
 
-def clean_equity_df(df):
+def clean_employee_df(df):
+    # let's normalize the column names
+    df = clean_columns(df)
 
     # removing the following features/columns as they appear to be redundant
     df = df.drop(columns = ["over_18", "employee_count"])
+    
+    # setting employee number as the index for future referencing and attrition modeling/predictions
+    df = df.set_index("employee_number").sort_index().rename_axis(None)
 
     # printing the new df shape
     print(f'df shape: {df.shape}')
