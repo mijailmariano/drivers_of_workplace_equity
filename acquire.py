@@ -95,7 +95,7 @@ def get_employee_df():
         df.to_csv("emp_df.csv")
 
     # let's print the shape too
-    print(f'df shape: {df.shape}')
+    print(f'initial df shape: {df.shape}')
 
     return df
 
@@ -144,6 +144,9 @@ def clean_employee_df(df):
             'years_in_current_role',
             'years_with_curr_manager']]
 
+    # renaming necessary columns for clarity
+    df = df.rename(columns = {"age": "employee_age"})
+
     # renaming/classifying attrition as boolean value types
     df["attrition"] = df["attrition"].replace({"Yes": True, "No": False})
 
@@ -170,7 +173,7 @@ def clean_employee_df(df):
     df[disc_lst] = df[disc_lst].astype(object)
 
     # printing the new df shape
-    print(f'df shape: {df.shape}')
+    print(f'shape after cleaning: {df.shape}')
 
     # lastly, return the dataframe
     return df
@@ -198,10 +201,9 @@ def df_outliers(df):
     df = df[df["years_with_curr_manager"] <= 14.50]
 
     # returning the cleaned dataset
-    print(f'dataframe shape: {df.shape}')
+    print(f'shape after outliers: {df.shape}')
 
     return df
-
 
 
 '''Function created to split the initial dataset into train, validate, and test datsets'''
@@ -220,16 +222,85 @@ def train_validate_test_split(df):
 
     return train, validate, test
 
+'''Function created to scale continuous data for modeling'''
+def scaled_data(df):
+    # selecting features to scale
+    scale_lst = df.select_dtypes(exclude = ["object", "uint8", "bool"]).columns.tolist()
 
-def scaled_data(df, scaled_cols):
     # creating a copy of the original zillow/dataframe
     df_scaled = df.copy()
 
+    # created the standard scaler
     scaler = StandardScaler()
 
-    scaler.fit(df_scaled[scaled_cols])
+    # fit/learn from the selected columns
+    scaler.fit(df_scaled[scale_lst])
 
-    df_scaled[scaled_cols] = scaler.transform(df_scaled[scaled_cols])
+    # apply/transform the data
+    df_scaled[scale_lst] = scaler.transform(df_scaled[scale_lst])
+    
+    print(f'scaled df shape: {df_scaled.shape}')
 
     # returning newly created dataframe with scaled data
     return df_scaled
+
+'''function to create dummy variables for discrete variables/feature'''
+def get_dummy_dataframes(train_df, val_df, test_df):
+
+    # train dataset
+    train_dummy = pd.get_dummies(
+        data = train_df, 
+        columns = [
+                'job_level', 
+                'job_role', 
+                'marital_status', 
+                'stock_option_level'],
+        drop_first = False, 
+        dtype = bool)
+
+    # validate dataset
+    validate_dummy = pd.get_dummies(
+        data = val_df, 
+        columns = [
+                'job_level', 
+                'job_role', 
+                'marital_status', 
+                'stock_option_level'],
+        drop_first = False, 
+        dtype = bool)
+
+    # test dataset
+    test_dummy = pd.get_dummies(
+        data = test_df, 
+        columns = [
+                'job_level', 
+                'job_role', 
+                'marital_status', 
+                'stock_option_level'],
+        drop_first = False, 
+        dtype = bool)
+
+    # cleaning column names after dummy transformation
+    train_dummy = clean_columns(train_dummy)
+    validate_dummy = clean_columns(validate_dummy)
+    test_dummy = clean_columns(test_dummy)
+
+    # returning dummy datasets
+    return train_dummy, validate_dummy, test_dummy
+
+
+'''Function to create a dummy variable dataframe'''
+def get_dummy_df(df):
+    dummy_df = pd.get_dummies(
+                    data = df, 
+                    columns = [
+                            'job_level', 
+                            'job_role', 
+                            'marital_status', 
+                            'stock_option_level'],
+                            drop_first = False, 
+                            dtype = bool)
+
+    print(f'dummy df shape: {dummy_df.shape}')
+
+    return dummy_df
