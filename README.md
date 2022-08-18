@@ -101,7 +101,8 @@ I make several assumptions throughout the analysis that can potentially play a r
 
 ### **<u>Key Findings:</u>**
 
-After analyzing social-mobility metrics for 17 counties within an approximate 30 mile radius of New York City - I conclude that there is a level of correlation between socioeconomic data and company attrition. Although these factors alone are not entirely conclusive or deterministic for determining employee attrition, I believe that when paired with potentially recorded employee data, businesses are better equiped to gauge the their employment life-cycles. 
+After analyzing social-mobility metrics for 17 counties within an approximate 30 mile radius of New York City - I conclude that there is a level of correlation between socioeconomic data and company attrition. Although these factors alone are not entirely conclusive when determining employee attrition, I believe that when paired with potentially recorded employee data, businesses are better equiped to gauge the their employment life-cycles. 
+
 
 
 
