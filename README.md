@@ -1,6 +1,6 @@
-## **``Machine Learning Classification: Predicting Employee Attrition Through Socioeconomic Equity``**
+## **Machine Learning Classification: Predicting Employee Attrition Through Socioeconomic Equity**
 
-### **<u>``Data Sources``</u>**
+### **Data Sources**
     
     Harvard University's Opportunity Atlas: Socioeconomic Data & IBM's Watson AI Human Resources Dataset
 
@@ -52,7 +52,7 @@ add text...
 
 </br>
 
-$H_0$ (Null Hypothesis): The variable mean of turn over employees is not statistically different than the population mean.
+$H_0$ (Null Hypothesis): The variable mean of turn over employees is not statistically different than the population variable mean.
 
 $H_a$ (Alternate Hypothesis): The variable mean for turn over employees is statistically different than the population variable mean.
 
