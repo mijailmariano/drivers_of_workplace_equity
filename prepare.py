@@ -151,15 +151,120 @@ def df_outliers(df):
     return df
 
 
+'''Function to loop and inspect columns and unique values'''
+def data_samples(df):
+
+    for col in df.columns:
+        print(f'Feature/column: {col}')
+        print(f'Date type: {df[col].dtype}')
+        print(f'Missing values: {df[col].isnull().any()}')
+        print(f'Number of unique values: {df[col].nunique()}')
+        print(f'Data Sample: {list(df[col].head(7).sort_values())}')
+        print('-------------------------------------------------------------------')
+
+
+'''Function to plot feature distribution'''
+def plot_distribution(df):
+
+    # plotting individual columns/features by data type
+    for col in df.columns:
+        if df[col].dtype == int or df[col].dtype == float:
+            plt.figure(figsize = (7, 2))
+            sns.histplot(
+                df[col],
+                color = "seagreen",
+                alpha = 0.4,
+                kde = True)
+
+            plt.title(f'Feature: {col}')
+            plt.xlabel(None)
+            plt.show()
+        
+        elif col == "cty" or col == "county_name": 
+            # treating large discrete count plots seperate
+            plt.figure(figsize = (7, 2))
+            sns.countplot(
+                df[col],
+                order = df[col].value_counts().index,
+                label = col, 
+                palette="crest_r")
+
+            # plt.xticks(rotation = 90)
+            plt.tick_params(
+                            axis='x', # changes apply to the x-axis
+                            rotation = 90,
+                            labelsize = 4)
+            plt.xlabel(None)
+            plt.title(f'Feature: {col}')
+            plt.show()
+
+        else:
+            plt.figure(figsize = (7, 2))
+            sns.countplot(
+                y = df[col],
+                order = df[col].value_counts().index, 
+                orient = "h", 
+                palette="crest_r")
+
+            plt.ylabel(None)
+            plt.title(f'Feature: {col}')
+            plt.show()
+
+
+'''Function created to determine continuous variable/feature lower/upper bounds using an interquartile range method'''
+def get_lower_and_upper_bounds(df):
+    holder = []
+    num_lst = df.select_dtypes("number").columns.tolist()
+    # num_lst = [ele for ele in num_lst if ele not in ("parcel_id", 'longitude', 'latitude', 'blockgroup_assignment')]
+    k = 1.5
+
+    # determining continuous features/columns
+    for col in df[num_lst]:
+        
+        # determing 1st and 3rd quartile
+        q1, q3 = df[col].quantile([.25, 0.75])
+        
+        # calculate interquartile range
+        iqr = q3 - q1
+        
+        # set feature/data lower bound limit
+        lower_bound = q1 - k * iqr
+
+        # set feature/data upperbound limit
+        upper_bound = q3 + k * iqr
+        
+        metrics = { 
+            "column": col,
+            "column type": df[col].dtype,
+            "iqr": round(iqr, 5),
+            "lower_bound": round(lower_bound, 5),
+            "lower_outliers": len(df[df[col] < lower_bound]),
+            "upper_bound": round(upper_bound, 5),
+            "upper_outliers": len(df[df[col] > upper_bound])
+        }
+
+        holder.append(metrics)
+
+    new_df = pd.DataFrame(holder)
+
+    # returning the cleaned dataset
+    print(f'dataframe shape: {new_df.shape}')
+
+    return new_df
+
 '''Function created to split the initial dataset into train, validate, and test datsets'''
 def train_validate_test_split(df):
     train_and_validate, test = train_test_split(
-    df, test_size = 0.2, random_state = 548)
+                                                df, 
+                                                test_size = 0.2, 
+                                                random_state = 548,
+                                                stratify = df["attrition"])
     
     train, validate = train_test_split(
-        train_and_validate,
-        test_size = 0.3,
-        random_state = 548)
+                                    train_and_validate,
+                                    test_size = 0.3,
+                                    random_state = 548,
+                                    stratify = train_and_validate["attrition"])
 
     print(f'train shape: {train.shape}')
     print(f'validate shape: {validate.shape}')
@@ -190,33 +295,11 @@ def scaled_data(df):
     return df_scaled
 
 '''Function to create dummy variables for discrete variables/feature'''
-def get_dummy_dataframes(train_df, val_df, test_df):
+def get_dummy_dataframes(x_df):
 
     # train dataset
-    train_dummy = pd.get_dummies(
-        data = train_df, 
-        columns = [
-                'job_level', 
-                'job_role', 
-                'marital_status', 
-                'stock_option_level'],
-        drop_first = False, 
-        dtype = bool)
-
-    # validate dataset
-    validate_dummy = pd.get_dummies(
-        data = val_df, 
-        columns = [
-                'job_level', 
-                'job_role', 
-                'marital_status', 
-                'stock_option_level'],
-        drop_first = False, 
-        dtype = bool)
-
-    # test dataset
-    test_dummy = pd.get_dummies(
-        data = test_df, 
+    dummy_df = pd.get_dummies(
+        data = x_df, 
         columns = [
                 'job_level', 
                 'job_role', 
@@ -226,12 +309,13 @@ def get_dummy_dataframes(train_df, val_df, test_df):
         dtype = bool)
 
     # cleaning column names after dummy transformation
-    train_dummy = clean_columns(train_dummy)
-    validate_dummy = clean_columns(validate_dummy)
-    test_dummy = clean_columns(test_dummy)
+    dummy_df = clean_columns(dummy_df)
 
-    # returning dummy datasets
-    return train_dummy, validate_dummy, test_dummy
+    # printing the new df shape
+    print(f'dummy df shape: {dummy_df.shape}')
+
+    # returning dummy dataset
+    return dummy_df
 
 
 '''Function to create a single dummy variable dataframe'''
@@ -249,3 +333,28 @@ def get_dummy_df(df):
     print(f'dummy df shape: {dummy_df.shape}')
 
     return dummy_df
+
+'''Function which selects only statistically significant variables'''
+def select_stat_variables(x_df):
+
+        x_df = x_df[[
+        'job_level', 
+        'job_role', 
+        'marital_status', 
+        'stock_option_level',
+        'employee_age',
+        'employment_rates_at_35yrs',
+        'high_school_graduation_rate',
+        'household_income_at_35',
+        'monthly_income',
+        'percentage_married_by_35',
+        'poverty_rate',
+        'total_working_years',
+        'women_teenage_birthrate',
+        'years_at_company',
+        'years_in_current_role',
+        'years_with_curr_manager']]
+
+        print(f'df shape: {x_df.shape}')
+
+        return x_df
