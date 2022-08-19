@@ -67,7 +67,7 @@ def clean_employee_df(df):
             'incarceration_rate',
             'women_teenage_birthrate',
             'poverty_rate',
-            'employment_rates_at_35yrs',
+            'employment_rates_at_35',
             'single_parent_frac',
             'years_since_last_promotion',
             'county_name',
@@ -166,8 +166,13 @@ def data_samples(df):
 '''Function to plot feature distribution'''
 def plot_distribution(df):
 
+    # lst of columns to plot
+    col_lst = [col for col in df.columns if "attrition" not in col]
+    df = df[col_lst]
+
     # plotting individual columns/features by data type
     for col in df.columns:
+
         if df[col].dtype == int or df[col].dtype == float:
             plt.figure(figsize = (7, 2))
             sns.histplot(
@@ -192,7 +197,7 @@ def plot_distribution(df):
             # plt.xticks(rotation = 90)
             plt.tick_params(
                             axis='x', # changes apply to the x-axis
-                            rotation = 90,
+                            rotation = 45,
                             labelsize = 4)
             plt.xlabel(None)
             plt.title(f'Feature: {col}')
@@ -343,7 +348,7 @@ def select_stat_variables(x_df):
         'marital_status', 
         'stock_option_level',
         'employee_age',
-        'employment_rates_at_35yrs',
+        'employment_rates_at_35',
         'high_school_graduation_rate',
         'household_income_at_35',
         'monthly_income',

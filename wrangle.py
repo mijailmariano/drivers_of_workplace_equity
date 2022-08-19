@@ -116,7 +116,7 @@ def clean_employee_df(df):
             'incarceration_rate',
             'women_teenage_birthrate',
             'poverty_rate',
-            'employment_rates_at_35yrs',
+            'employment_rates_at_35',
             'single_parent_frac',
             'years_since_last_promotion',
             'county_name',
@@ -298,3 +298,41 @@ def get_dummy_df(df):
     print(f'dummy df shape: {dummy_df.shape}')
 
     return dummy_df
+
+
+'''Function to return originally selected RFECV features w/random forest classifier: needed for reproduceability'''
+def retrieve_rfecv_feature_lst():
+
+    feature_lst = [
+                'employee_age',
+                'employment_rates_at_35',
+                'high_school_graduation_rate',
+                'household_income_at_35',
+                'job_level_1',
+                'job_level_2',
+                'job_level_3',
+                'job_role_healthcare_representative',
+                'job_role_human_resources',
+                'job_role_laboratory_technician',
+                'job_role_manufacturing_director',
+                'job_role_research_scientist',
+                'job_role_sales_executive',
+                'job_role_sales_representative',
+                'marital_status_divorced',
+                'marital_status_married',
+                'marital_status_single',
+                'monthly_income',
+                'percentage_married_by_35',
+                'poverty_rate',
+                'stock_option_level_0',
+                'stock_option_level_1',
+                'stock_option_level_2',
+                'stock_option_level_3',
+                'total_working_years',
+                'women_teenage_birthrate',
+                'years_at_company',
+                'years_in_current_role',
+                'years_with_curr_manager']
+
+
+    return feature_lst

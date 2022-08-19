@@ -93,3 +93,39 @@ def get_employee_df():
     print(f'initial df shape: {df.shape}')
 
     return df
+
+'''Function to return originally selected RFECV features w/random forest classifier: needed for reproduceability'''
+def retrieve_rfecv_feature_lst():
+
+    feature_lst = [
+                'employee_age',
+                'employment_rates_at_35',
+                'high_school_graduation_rate',
+                'household_income_at_35',
+                'job_level_1',
+                'job_level_2',
+                'job_level_3',
+                'job_role_Healthcare Representative',
+                'job_role_Human Resources',
+                'job_role_Laboratory Technician',
+                'job_role_Manufacturing Director',
+                'job_role_Research Scientist',
+                'job_role_Sales Executive',
+                'job_role_Sales Representative',
+                'marital_status_Divorced',
+                'marital_status_Married',
+                'marital_status_Single',
+                'monthly_income',
+                'percentage_married_by_35',
+                'poverty_rate',
+                'stock_option_level_0',
+                'stock_option_level_1',
+                'stock_option_level_2',
+                'stock_option_level_3',
+                'total_working_years',
+                'women_teenage_birthrate',
+                'years_at_company',
+                'years_in_current_role',
+                'years_with_curr_manager']
+
+    return feature_lst
