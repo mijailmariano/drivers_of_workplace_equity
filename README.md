@@ -1,6 +1,10 @@
-## **Machine Learning Classification: Predicting Employee Attrition Through Socioeconomic Equity**
+## <u>``The Social Equity Impact on Employee Attrition``</u>
 
-### **Data Sources**
+## **Machine Learning Classification: Predicting Employee Attrition through Social-mobility Metrics**
+
+<br>
+
+#### ``Data Sources``
     
     Harvard University's Opportunity Atlas: Socioeconomic Data & IBM's Watson AI Human Resources Dataset
 
