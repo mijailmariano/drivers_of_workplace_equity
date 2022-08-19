@@ -2,10 +2,6 @@
 
 ## **Machine Learning Classification: Predicting Employee Attrition through Social-mobility Metrics**
 
-#### **Data Sources**
-    
-    Harvard University's Opportunity Atlas: Socioeconomic Data & IBM's Watson AI Human Resources Dataset
-
 ----
 
 ##### Created by: Mijail Q. Mariano
@@ -16,6 +12,16 @@
 ### **<u>Project Description:</u>**
 
 The goal of this analysis was to understand and test whether social-mobility* measures can have an effect on company-employee attrition. After analyzing the data, I use statistically significant socioeconomic variables with machine learning classification techniques to successfuly predict employee turn-over.
+
+***
+*Socioeconomic Mobility in the United States can refer to the upward or downward movement of American subgroups or classes from one particular social class or economic attainment to another. Although this metric can be measured for all subgroups, it is typically cited when studying minority subgroups or underrepresented communities, and the barriers to equal opportunities.*
+
+*Socioeconomic mobility can be examined and measured through certain social factors such as employment/leadership opportunities, marriage, social networks, access to education, innovation, illegal activities, access to health care, or monatary wealth.*
+***
+
+#### **Data Sources**
+    
+    Harvard University's Opportunity Atlas: Socioeconomic Data & IBM's Watson AI Human Resources Dataset
 
 The socioeconomic data for this analysis was acquired from Harvard University's "Opportunity Atlas" platform. In collaboration with the US Census Bureau and Internal Revenue Service (IRS) - the Opportunity Atlas tracks anonymized metrics of social-mobility of children born in the years from 1978 - 1983 through adulthood. 
 
