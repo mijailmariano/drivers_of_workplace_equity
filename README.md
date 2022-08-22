@@ -455,7 +455,7 @@ Below is a GitHub repository roadmap and breakdown of the key files needed to na
 
 **Stock Option Level**
 
-    add text...
+    A proportion of the employee's salary spent on discounted company stock. Where '0' signifies the employee did not purchase any company stock, and a higher-number signifies a higher proportion purchased.
 
 **Environment Satisfaction**
 
