@@ -11,7 +11,7 @@
 
 ### **<u>Project Description:</u>**
 
-The goal of this analysis was to understand and test whether social-mobility* measures can have an effect on company-employee attrition. After analyzing the data, I use statistically significant socioeconomic variables with machine learning classification techniques to successfuly predict employee turn-over.
+The goal of this analysis was to understand and test whether social-mobility* measures can have an effect on company-employee attrition. After analyzing the data, I use statistically significant socioeconomic variables with machine learning classification techniques to successfully predict employee turn-over.
 
 ***
 *Socioeconomic Mobility in the United States can refer to the upward or downward movement of American subgroups or classes from one particular social class or economic attainment to another. Although this metric can be measured for all subgroups, it is typically cited when studying historically marginilized communities or subgroups, and the barriers they overcome to obtain equal opportunities.*
