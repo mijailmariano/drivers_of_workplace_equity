@@ -165,11 +165,11 @@ $H_a$ (Alternate Hypothesis): The variable mean for turn over employees is stati
 
 <br>
 
-$H_0$: "There is not a relationship between observed variable outcomes and expected employee turn over."
+$H_0$ (Null Hypothesis): "There is not a relationship between observed variable outcomes and expected employee turn over."
 
-$H_a$: "There is a relationship between observed variable outcomes and expected employee turn over."
+$H_a$ (Alternate Hypothesis): "There is a relationship between observed variable outcomes and expected employee turn over."
 
-* $alpha$: 1 - Confidence Interval (95% confidence level)
+* $alpha$: 1.0 - Confidence Interval (95% confidence level)
 * $\alpha$ = 0.05
 
 </br>
@@ -287,7 +287,7 @@ Below is a GitHub repository roadmap and breakdown of the key files needed to na
   
    Python module file that imports the necessary dataset. Once the dataset is pulled and loaded into a .ipynb file, it is then cached locally into a .csv file. All subsequent calling of this data will be referenced from the cached .csv.   
    
-   **Note:** you must first import the initial Zillow dataset from MySQL. When passed in the "acquire.get_zillow_dataset()" function, the data is then stored locally as a .csv file - then referenced as a pd.Dataframe thereafter. 
+   **Note:** you must first import the initial dataset from MySQL. When passed in the "acquire.get_logs_dataset()" function, the data is then stored locally as a .csv file - then referenced as a pd.Dataframe thereafter. 
 
 4. **prepare.py**
 
