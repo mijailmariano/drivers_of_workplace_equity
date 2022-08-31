@@ -285,9 +285,7 @@ Below is a GitHub repository roadmap and breakdown of the key files needed to na
 
 3. **acquire.py** 
   
-   Python module file that imports the necessary dataset. Once the dataset is pulled and loaded into a .ipynb file, it is then cached locally into a .csv file. All subsequent calling of this data will be referenced from the cached .csv.   
-   
-   **Note:** you must first import the initial dataset from MySQL. When passed in the "acquire.get_logs_dataset()" function, the data is then stored locally as a .csv file - then referenced as a pd.Dataframe thereafter. 
+   Python module file that imports the necessary data when the "acquire.get_logs_dataset()" function is called. Once the data is pulled and loaded into a .ipynb file, it is then cached locally into a .csv file. All subsequent calling of this data will be referenced from the cached .csv file.
 
 4. **prepare.py**
 
