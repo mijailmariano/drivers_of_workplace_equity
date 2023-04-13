@@ -1,4 +1,3 @@
-theme: minima
 ## **<u>The Social Equity Impact on Employee Attrition</u>**
 
 ## **Machine Learning Classification: Predicting Employee Attrition through Social-mobility Metrics**
