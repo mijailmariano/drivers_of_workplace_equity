@@ -165,55 +165,53 @@ def data_samples(df):
 
 '''Function to plot feature distribution'''
 def plot_distribution(df):
-
-    # lst of columns to plot
+    # make sure the input is a pandas DataFrame
+    if not isinstance(df, pd.DataFrame):
+        raise ValueError("Input data must be a pandas object to reorder")
+    
+    # select columns to plot
     col_lst = [col for col in df.columns if "attrition" not in col]
     df = df[col_lst]
 
-    # plotting individual columns/features by data type
+    # plot individual columns/features by data type
     for col in df.columns:
-
         if df[col].dtype == int or df[col].dtype == float:
-            plt.figure(figsize = (7, 2))
-            sns.histplot(
-                df[col],
-                color = "seagreen",
-                alpha = 0.4,
-                kde = True)
 
-            plt.title(f'Feature: {col}')
+            plt.figure(figsize=(7, 2))
+            sns.histplot(df[col], color="seagreen", alpha=0.4, kde=True)
+            plt.title(f"Feature: {col}")
             plt.xlabel(None)
             plt.show()
-        
-        elif col == "cty" or col == "county_name": 
-            # treating large discrete count plots seperate
-            plt.figure(figsize = (7, 2))
-            sns.countplot(
-                df[col],
-                order = df[col].value_counts().index,
-                label = col, 
-                palette="crest_r")
 
-            # plt.xticks(rotation = 90)
-            plt.tick_params(
-                            axis='x', # changes apply to the x-axis
-                            rotation = 45,
-                            labelsize = 4)
+        elif col == "cty" or col == "county_name":
+            plt.figure(figsize=(7, 2))
+            sns.countplot(
+                data=df,
+                x=col,
+                order=df[col].value_counts().index,
+                label=col,
+                palette="crest_r",
+            )
+
+            plt.tick_params(axis="x", rotation=45, labelsize=4)
             plt.xlabel(None)
-            plt.title(f'Feature: {col}')
+            plt.title(f"Feature: {col}")
             plt.show()
 
         else:
-            plt.figure(figsize = (7, 2))
+            plt.figure(figsize=(7, 2))
             sns.countplot(
-                y = df[col],
-                order = df[col].value_counts().index, 
-                orient = "h", 
-                palette="crest_r")
-
+                data=df,
+                y=col,
+                order=df[col].value_counts().index,
+                orient="h",
+                palette="crest_r",
+            )
+            
             plt.ylabel(None)
-            plt.title(f'Feature: {col}')
+            plt.title(f"Feature: {col}")
             plt.show()
+
 
 
 '''Function created to determine continuous variable/feature lower/upper bounds using an interquartile range method'''
