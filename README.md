@@ -1,3 +1,4 @@
+theme: minima
 ## **<u>The Social Equity Impact on Employee Attrition</u>**
 
 ## **Machine Learning Classification: Predicting Employee Attrition through Social-mobility Metrics**
@@ -14,9 +15,9 @@
 The goal of this analysis was to understand and test whether social-mobility* measures can have an effect on company-employee attrition. After analyzing the data, I use statistically significant socioeconomic variables with machine learning classification techniques to successfully predict employee turn-over.
 
 ***
-*Socioeconomic Mobility in the United States can refer to the upward or downward movement of American subgroups or classes from one particular social class or economic attainment to another. Although this metric can be measured for all subgroups, it is typically cited when studying historically marginilized communities or subgroups, and the barriers they overcome to obtain equal opportunities.*
+*Socioeconomic Mobility in the United States can refer to the upward or downward movement of American subgroups or classes from one particular social class or economic attainment to another. Although this metric can be measured for all subgroups, it is typically cited when studying historically marginalized communities or subgroups, and the barriers they overcome to obtain equal opportunities.*
 
-*Socioeconomic mobility can be examined and measured through certain social factors such as employment/leadership opportunities, marriage, social networks, access to education, innovation, illegal activities, access to health care, or monatary wealth.*
+*Socioeconomic mobility can be examined and measured through certain social factors such as employment/leadership opportunities, marriage, social networks, access to education, innovation, illegal activities, access to health care, or monetary wealth.*
 ***
 
 #### **Data Sources**
